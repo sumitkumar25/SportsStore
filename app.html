@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app="sportsStore">
+<head>
+    <title>SportsStore</title>
+    <script src="vendor/js/angular1.5.js"></script>
+    <link href="vendor/css/bootstrap.css" rel="stylesheet"/>
+    <link href="vendor/css/bootstrap-theme.css" rel="stylesheet"/>
+</head>
+<body ng-controller="sportsStoreCtrl">
+<div class="navbar navbar-inverse">
+    <a class="navbar-brand" href="#">SPORTS STORE</a>
+</div>
+<div class="panel panel-default row" ng-controller="productListController">
+    <div class="col-xs-3">
+        <a ng-click="selectCategory()" class="btn btn-block btn-default btn-lg">Home</a>
+        <a ng-repeat="item in data.products | orderBy:'category' | unique:'category'"
+           ng-click="selectCategory(item)" class=" btn btn-block btn-default btn-lg" ng-class="getActiveClass(item)">
+            {{item}}
+        </a>
+    </div>
+    <div class="col-xs-8">
+        <div class="well" ng-repeat="item in data.products |filter:categoryFilterFn">
+            <h3>
+                <strong>{{item.name}}</strong>
+                <span class="pull-right label label-primary">
+                    {{item.price|currency}}
+                </span>
+                <span class="lead">{{item.description}}</span>
+            </h3>
+        </div>
+    </div>
+</div>
+<script>
+    angular.module("sportsStore", ["customFilters"]);
+</script>
+<script src="controllers/sportsStoreController.js"></script>
+<script src="filters/customFIlters.js"></script>
+<script src="controllers/productListController.js"></script>
+</body>
+</html>
