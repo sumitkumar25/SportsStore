@@ -1,24 +1,29 @@
-/**
- * Created by sukumar on 10/18/2016.
- */
-angular.module('sportsStore')
+angular.module("sportsStore")
     .constant("productListActiveClass", "btn-primary")
     .constant("productListPageCount", 3)
-    .controller('productListController', function ($scope, $filter,
-                                                   productListActiveClass, productListPageCount) {
+    .controller("productListController", function ($scope, $filter,
+                                                   productListActiveClass, productListPageCount, cart) {
         var selectedCategory = null;
-        $scope.selectCategory = function (category) {
-            selectedCategory = category
-        }
-        $scope.categoryFilterFn = function (product) {
-            return product.category == selectedCategory || selectedCategory == null;
-        }
-        $scope.getActiveClass = function (category) {
-            return category == selectedCategory ? productListActiveClass : "";
-        }
         $scope.selectedPage = 1;
         $scope.pageSize = productListPageCount;
+        $scope.selectCategory = function (newCategory) {
+            selectedCategory = newCategory;
+            $scope.selectedPage = 1;
+        };
+        $scope.selectPage = function (newPage) {
+            $scope.selectedPage = newPage;
+        };
+        $scope.categoryFilterFn = function (product) {
+            return selectedCategory == null ||
+                product.category == selectedCategory;
+        };
+        $scope.getCategoryClass = function (category) {
+            return selectedCategory == category ? productListActiveClass : "";
+        };
         $scope.getPageClass = function (page) {
             return $scope.selectedPage == page ? productListActiveClass : "";
+        };
+        $scope.addProductToCart = function (product) {
+            cart.addProduct(product.id, product.name, product.price);
         }
     });
